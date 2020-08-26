@@ -13,7 +13,7 @@ pipeline {
         rtNpmDeployer (
             id: 'deployer-id',
             serverId: 'jfrogserver',
-            repo: 'npm-local'
+            repo: 'npm-local/npm-example'
             // Attach custom properties to the published artifacts:
             //properties: ['key1=value1', 'key2=value2']
         )
@@ -21,7 +21,7 @@ pipeline {
             // Optional tool name from Jenkins configuration
             tool: 'node',
             // Optional path to the project root. If not set, the root of the workspace is assumed as the root project path.
-            path: 'npm-example',
+            path: '.',
             // Optional npm flags or arguments.
             //args: '--verbose',
             resolverId: 'resolver-id',
@@ -37,7 +37,7 @@ pipeline {
             // Optional tool name from Jenkins configuration
             tool: 'node',
             // Optional path to the project root. If not set, the root of the workspace is assumed as the root project path.
-            path: 'npm-example',
+            path: '.',
             deployerId: 'deployer-id',
             // Jenkins spawns a new java process during this step's execution.
             // You have the option of passing any java args to this new process.
