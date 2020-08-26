@@ -10,15 +10,15 @@ pipeline {
   //  }
     stage('PUBLISH') {
       steps {
+        sh 'docker tag nginx:alpine 192.168.168.1:8082/docker-local/nginx:alpine'
         rtServer (
             id: 'jfrogserver',
             url: 'http://192.168.168.1:8082/artifactory',
             credentialsId: 'jfrogdeploy'
         )
-         
         rtDockerPush(
             serverId: 'jfrogserver',
-            image: 'nginx:alpine',
+            image: '192.168.168.1:8082/docker-local/nginx:alpine',
             // Host:
             // On OSX: 'tcp://127.0.0.1:1234'
             // On Linux can be omitted or null
