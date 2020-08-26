@@ -21,7 +21,7 @@ pipeline {
             )
         rtDockerPush(
             serverId: 'jfrogserver',
-            image: ARTIFACTORY_DOCKER_REGISTRY + '/nginx:alpine',
+            image: 'docker-local/nginx:alpine',
             // Host:
             // On OSX: 'tcp://127.0.0.1:1234'
             // On Linux can be omitted or null
