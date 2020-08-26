@@ -10,7 +10,7 @@ pipeline {
   //  }
     stage('PUBLISH') {
       steps {
-        sh 'docker tag nginx:alpine 192.168.168.1:8082/docker-local/nginx:alpine'
+        sh 'docker tag nginx:1.13 192.168.168.1:8082/docker-local/nginx:13'
         rtServer (
             id: 'jfrogserver',
             url: 'http://192.168.168.1:8082/artifactory',
@@ -18,7 +18,7 @@ pipeline {
         )
         rtDockerPush(
             serverId: 'jfrogserver',
-            image: '192.168.168.1:8082/docker-local/nginx:alpine',
+            image: '192.168.168.1:8082/docker-local/nginx:13',
             // Host:
             // On OSX: 'tcp://127.0.0.1:1234'
             // On Linux can be omitted or null
@@ -33,7 +33,15 @@ pipeline {
             // You have the option of passing any java args to this new process.
             //javaArgs: '-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005'
         )
-         
+      }
+    }
+    stage('PUBLISHInfo') {
+      steps {
+        rtServer (
+            id: 'jfrogserver',
+            url: 'http://192.168.168.1:8082/artifactory',
+            credentialsId: 'jfrogadmin'
+        )
         rtPublishBuildInfo (
             serverId: 'jfrogserver'
         )
