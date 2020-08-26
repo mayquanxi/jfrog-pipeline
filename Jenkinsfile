@@ -1,17 +1,13 @@
 pipeline {
   agent {
-    docker {
-      image 'nginx:alpine'
-      label 'host'
-      args '-p 8008:80'
-    }
+    label 'host'
   }
   stages {
-    stage('BUILD') {
-      steps {
-        sh "nginx -g 'daemon off;' & sleep 5"
-      }
-    }
+    //stage('BUILD') {
+      //steps {
+    //    sh "nginx -g 'daemon off;' & sleep 5"
+   //   }
+  //  }
     stage('PUBLISH') {
       steps {
         rtServer (
@@ -21,14 +17,14 @@ pipeline {
             )
         rtDockerPush(
             serverId: 'jfrogserver',
-            image: 'docker-local/nginx:alpine',
+            image: 'nginx:alpine',
             // Host:
             // On OSX: 'tcp://127.0.0.1:1234'
             // On Linux can be omitted or null
-            host: 'nginxsvr',
+            //host: 'nginxsvr',
             targetRepo: 'docker-local',
             // Attach custom properties to the published artifacts:
-            properties: 'project-name=docker1;status=stable',
+            //properties: 'project-name=docker1;status=stable',
             // If the build name and build number are not set here, the current job name and number will be used:
             //buildName: 'my-docker-build',
             //buildNumber: '17', 
