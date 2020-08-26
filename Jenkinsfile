@@ -17,17 +17,32 @@ pipeline {
     }
     stage('UPDATE') {
       steps {
-        rtDownload (
+        rtUpload (
           serverId: 'jfrogserver',
           spec: '''{
             "files": [
               {
-                "pattern": "build/*"
+                "pattern": "build/*",
                 "target": "npm-data/nodejs-html-simple"
               }
             ]
           }'''
           )
+      }
+    }
+    stage('DOWNLOAD') {
+      steps {
+        rtDownload (
+          serverId: 'jfrogserver',
+          spec: '''{
+            "files": [
+              {
+                "pattern": "npm-data/nodejs-html-simple",
+                "target": "production/"
+              }
+            ]
+            }'''
+        )
       }
     }
   }
