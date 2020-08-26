@@ -8,9 +8,10 @@ pipeline {
         nodejs('node') {
           echo "install dependencies"
           sh 'npm install'
-          sh 'npm start & sleep 2'
+          //sh 'npm start & sleep 2'
           echo "access webapps before continue"
           echo "address: http://172.18.0.2:3000"
+
         }
       }
     }
@@ -42,6 +43,7 @@ pipeline {
             ]
             }'''
         )
+        sh 'cd production'
         sh 'npm install'
         sh 'npm start & sleep 30'
       }
