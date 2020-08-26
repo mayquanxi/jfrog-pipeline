@@ -2,7 +2,7 @@ pipeline {
   agent {
     docker {
       image 'nginx:alpine'
-      labels 'host'
+      label 'host'
       args '-p 8008:80'
     }
   }
