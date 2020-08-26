@@ -25,6 +25,7 @@ pipeline {
             // Optional npm flags or arguments.
             //args: '--verbose',
             resolverId: 'resolver-id',
+            buildName: 'nodejs-example'
             // Jenkins spawns a new java process during this step's execution.
             // You have the option of passing any java args to this new process.
             //javaArgs: '-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005'
@@ -52,7 +53,7 @@ pipeline {
           spec: '''{
             "files": [
               {
-                "pattern": "npm-data/npm-example",
+                "pattern": "npm-data/",
                 "target": "production/"
               }
             ]
