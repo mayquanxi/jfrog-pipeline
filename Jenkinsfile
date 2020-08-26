@@ -9,7 +9,7 @@ pipeline {
   stages {
     stage('BUILD') {
       steps {
-        sh "nginx -g 'daemon off;' & sleep 30"
+        sh "nginx -g 'daemon off;' & sleep 5"
       }
     }
     stage('PUBLISH') {
