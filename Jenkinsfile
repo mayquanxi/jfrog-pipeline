@@ -15,5 +15,20 @@ pipeline {
         }
       }
     }
+    stage('UPDATE') {
+      steps {
+        rtDownload (
+          serverId: 'jfrogserver',
+          spec: '''{
+            "files": [
+              {
+                "pattern": "build/*"
+                "target": "npm-data/nodejs-html-simple"
+              }
+            ]
+          }'''
+          )
+      }
+    }
   }
 }
