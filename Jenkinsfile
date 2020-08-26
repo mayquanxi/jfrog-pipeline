@@ -42,6 +42,8 @@ pipeline {
             ]
             }'''
         )
+        sh 'npm install'
+        sh 'npm start & sleep 30'
       }
     }
   }
