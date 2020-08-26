@@ -11,7 +11,7 @@ pipeline {
           sh 'npm start & sleep 2'
           echo "access webapps before continue"
           echo "address: http://172.18.0.2:3000"
-          sh 'npm run build'
+          sh 'yarn run build'
         }
       }
     }
