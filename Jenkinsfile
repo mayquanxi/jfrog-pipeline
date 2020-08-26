@@ -14,8 +14,8 @@ pipeline {
           image: 'nginx:alpine',
           host: 'host',
           targetRepo: 'docker-local',
-          server: 'jfrogserver'
-          )
+          server: 'jfrogserver',
+        )
       }
     }
   }
