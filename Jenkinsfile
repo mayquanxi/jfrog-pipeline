@@ -25,7 +25,7 @@ pipeline {
             // Host:
             // On OSX: 'tcp://127.0.0.1:1234'
             // On Linux can be omitted or null
-            host: HOST_NAME,
+            host: 'nginxsvr',
             targetRepo: 'docker-local',
             // Attach custom properties to the published artifacts:
             properties: 'project-name=docker1;status=stable',
