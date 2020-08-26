@@ -13,7 +13,7 @@ pipeline {
         rtNpmDeployer (
             id: 'deployer-id',
             serverId: 'jfrogserver',
-            repo: 'npm-local/npm-example'
+            repo: 'npm-local'
             // Attach custom properties to the published artifacts:
             //properties: ['key1=value1', 'key2=value2']
         )
