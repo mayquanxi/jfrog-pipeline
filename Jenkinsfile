@@ -1,67 +1,44 @@
 pipeline {
   agent {
-    label 'host'
+    docker {
+      image 'nginx:alpine'
+      labels 'host'
+      args '-p 8008:80'
+    }
   }
   stages {
     stage('BUILD') {
       steps {
-        rtNpmResolver (
-            id: 'resolver-id',
-            serverId: 'jfrogserver',
-            repo: 'npm-local-dependencies'
-        )
-        rtNpmDeployer (
-            id: 'deployer-id',
-            serverId: 'jfrogserver',
-            repo: 'npm-local'
-            // Attach custom properties to the published artifacts:
-            //properties: ['key1=value1', 'key2=value2']
-        )
-        rtNpmInstall (
-            // Optional tool name from Jenkins configuration
-            tool: 'node',
-            // Optional path to the project root. If not set, the root of the workspace is assumed as the root project path.
-            path: '.',
-            // Optional npm flags or arguments.
-            //args: '--verbose',
-            resolverId: 'resolver-id',
-            buildName: 'nodejs-example'
-            // Jenkins spawns a new java process during this step's execution.
-            // You have the option of passing any java args to this new process.
-            //javaArgs: '-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005'
-        )
+        sh "nginx -g 'daemon off;' & sleep 30"
       }
     }
     stage('PUBLISH') {
       steps {
-        rtNpmPublish (
-            // Optional tool name from Jenkins configuration
-            tool: 'node',
-            // Optional path to the project root. If not set, the root of the workspace is assumed as the root project path.
-            path: '.',
-            deployerId: 'deployer-id',
+        rtServer (
+            id: 'jfrogserver',
+            url: 'http://192.168.168.1:8082/artifactory/docker-local/',
+            credentialsId: 'jfrogdeploy'
+            )
+        rtDockerPush(
+            serverId: 'jfrogserver',
+            image: ARTIFACTORY_DOCKER_REGISTRY + '/nginx:alpine',
+            // Host:
+            // On OSX: 'tcp://127.0.0.1:1234'
+            // On Linux can be omitted or null
+            host: HOST_NAME,
+            targetRepo: 'docker-local',
+            // Attach custom properties to the published artifacts:
+            properties: 'project-name=docker1;status=stable',
+            // If the build name and build number are not set here, the current job name and number will be used:
+            //buildName: 'my-docker-build',
+            //buildNumber: '17', 
             // Jenkins spawns a new java process during this step's execution.
             // You have the option of passing any java args to this new process.
             //javaArgs: '-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005'
         )
-      }
-    }
-    stage('DOWNLOAD') {
-      steps {
-        rtDownload (
-          serverId: 'jfrogserver',
-          spec: '''{
-            "files": [
-              {
-                "pattern": "npm-data/",
-                "target": "production/"
-              }
-            ]
-            }'''
+        rtPublishBuildInfo (
+            serverId: 'jfrogserver'
         )
-        sh 'cd production'
-        sh 'npm install'
-        sh 'npm start & sleep 30'
       }
     }
   }
